@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <declare-styleable name="SquareVerifyCodeView">
+        <!--方框数量-->
+        <attr name="svcv_square_number" format="integer"/>
+        <!--方框宽度-->
+        <attr name="svcv_square_width" format="dimension|reference"/>
+        <!--方框间隔-->
+        <attr name="svcv_square_interval" format="dimension|reference"/>
+        <!--方框背景在选中状态的资源-->
+        <attr name="svcv_square_selected_bg" format="reference"/>
+        <!--方框背景在未选中状态的资源-->
+        <attr name="svcv_square_unselected_bg" format="reference"/>
+        <!--文本大小-->
+        <attr name="android:textSize" tools:ignore="ResourceName"/>
+        <!--文本颜色-->
+        <attr name="android:textColor" tools:ignore="ResourceName"/>
+        <!--文本样式-->
+        <attr name="android:textStyle" tools:ignore="ResourceName"/>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,303 @@
+//请在项目根目录的build.gradle文件的顶部加入下面这行代码，使该文件的配置能被引用
+//apply from:"config.gradle"
+
+ext {
+    //你可以在模块的build文件中使用如下格式代码来引用此文件内容：
+    //compileSdkVersion rootProject.ext.android.compileSdkVersion
+    //buildToolsVersion rootProject.ext.android.buildToolsVersion
+    //applicationId rootProject.ext.android.applicationId
+    //minSdkVersion rootProject.ext.android.minSdkVersion
+    //targetSdkVersion rootProject.ext.android.targetSdkVersion
+    //versionCode rootProject.ext.android.versionCode
+    //versionName rootProject.ext.android.versionName
+    //注意：编译版本（compileSdkVersion）>= 目标sdk版本（targetSdkVersion）, 旧版support库的版本 <= compileSdkVersion.
+    android = [
+            compileSdkVersion      : 28,
+            buildToolsVersion      : "29.0.2",
+            applicationId          : "ckc.android.app",
+            minSdkVersion          : 21,//android 5.0
+            targetSdkVersion       : 28,//android 9.0
+            versionCode            : 1,
+            versionName            : "1.0.0"
+    ]
+
+    third_part = [
+        greendao_schemaVersion     : 1
+    ]
+
+    dependVersion = [
+            androidx        :   "1.0.2",
+            support         :   "28.0.0",
+            rxlifecycle2    :   "2.1.0",
+            retrofit2       :   "2.1.0",
+            dagger          :   "2.24",
+            glide           :   "4.10.0",
+            "glide-support" :   "4.9.0",
+    ]
+
+    //你可以在模块的build文件中使用如下格式代码依赖库：
+    //rootProject.ext.dependencies.androidx
+    //或者
+    //rootProject.ext.dependencies["androidx"]
+    //注意：带”-“的名称必须以双引号包围，否则会报错。
+    dependencies = [
+            //我自己的库
+            //mvp架构依赖库
+            KcMvp                   : "com.github.foreverGoUp:KcMvp:1.0.1",
+
+            //android-support（compileSdkVersion 27-）
+            "support-v4"            : "com.android.support:support-v4:${dependVersion.support}",
+            "appcompat-v7"          : "com.android.support:appcompat-v7:${dependVersion.support}",
+            design                  : "com.android.support:design:${dependVersion.support}",
+            recyclerview            : "com.android.support:recyclerview-v7:${dependVersion.support}",
+            cardview                : "com.android.support:cardview-v7:${dependVersion.support}",
+
+            //androidx,support库（compileSdkVersion 28+）
+            androidx                : "androidx.appcompat:appcompat:${dependVersion.androidx}",
+            constraintlayout        : "androidx.constraintlayout:constraintlayout:1.1.3",
+            //包含TabLayout
+            material                : "com.google.android.material:material:1.0.0",
+
+            //路由
+            "router-api"            : "com.github.Dovar66.DRouter:router-api:1.0.9",
+            "router-compiler"       : "com.github.Dovar66.DRouter:router-compiler:1.0.9",
+
+            //http 请求
+            retrofit2               : "com.squareup.retrofit2:retrofit:${dependVersion.retrofit2}",
+            "converter-scalars"     : "com.squareup.retrofit2:converter-scalars:${dependVersion.retrofit2}",
+            "converter-gson"        : "com.squareup.retrofit2:converter-gson:${dependVersion.retrofit2}",
+            "adapter-rxjava2"       : "com.squareup.retrofit2:adapter-rxjava2:2.2.0",
+            "logging-interceptor"   : "com.squareup.okhttp3:logging-interceptor:3.9.1",
+
+            //tcp 请求
+            netty                   : "io.netty:netty-all:4.1.22.Final",
+
+            //搭配Retrofit使用的rx http cache缓存
+            rxCache                 : "com.github.VictorAlbertos.RxCache:runtime:1.8.3-2.x",
+            //以下三选一，用于rxCache缓存时进行序列化和反序列化
+            "Jolyglot-gson"         : "com.github.VictorAlbertos.Jolyglot:gson:0.0.4",
+            "Jolyglot-jackson"      : "com.github.VictorAlbertos.Jolyglot:jackson:0.0.4",
+            "Jolyglot-moshi"        : "com.github.VictorAlbertos.Jolyglot:moshi:0.0.4",
+
+            //rxjava
+            rxjava2                 : "io.reactivex.rxjava2:rxjava:2.2.13",
+            rxandroid2              : "io.reactivex.rxjava2:rxandroid:2.1.1",
+            //rx binding，基于BK，引用布局ID直接对控件进行属性设置和监听回调。这只是一个平台库，github上还有其他可以依赖的已封装控件库。
+            rxbinding               : "com.jakewharton.rxbinding3:rxbinding:3.0.0",
+            //rx 界面生命周期与请求的关联
+            rxlifecycle2            : "com.trello.rxlifecycle2:rxlifecycle:${dependVersion.rxlifecycle2}",
+            rxlifecomponents        : "com.trello.rxlifecycle2:rxlifecycle-components:${dependVersion.rxlifecycle2}",
+            //rx 权限请求
+            rxpermissions           : "com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar",
+
+            //dagger2 依赖注入
+            dagger                  : "com.google.dagger:dagger:${dependVersion.dagger}",
+            "dagger-compiler"       : "com.google.dagger:dagger-compiler:${dependVersion.dagger}",
+            "dagger-android"        : "com.google.dagger:dagger-android:${dependVersion.dagger}",
+            "dagger-android-processor": "com.google.dagger:dagger-android-processor:${dependVersion.dagger}",
+            "dagger-android-support": "com.google.dagger:dagger-android-support:${dependVersion.dagger}",// if you use the support libraries
+
+            //RecyclerView辅助
+            //列表适配器
+            //androidx:2.9.47-androidx ,support:2.9.50
+            BRVAH                   : "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.47",
+            "BRVAH-support"         : "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50",
+            "bga-baseadapter"       : "cn.bingoogolapple:bga-baseadapter:1.2.9@aar",
+            //下拉刷新
+            SmartRefreshLayout      : "com.scwang.smartrefresh:SmartRefreshLayout:1.1.0",
+            SmartRefreshHeader		: "com.scwang.smartrefresh:SmartRefreshHeader:1.1.0",
+            EasyRefreshLayout       : "com.github.anzaizai:EasyRefreshLayout:1.3.1",
+            //Item侧滑
+            EasySwipeMenuLayout     : "com.github.anzaizai:EasySwipeMenuLayout:1.1.4",
+
+            //图片加载
+            //androidx:4.10.0,support:4.9.0
+            glide                   : "com.github.bumptech.glide:glide:${dependVersion.glide}",
+            "glide-compiler"        : "com.github.bumptech.glide:compiler:${dependVersion.glide}",
+            //support version
+            "glide-support"                 : "com.github.bumptech.glide:glide:${dependVersion["glide-support"]}",
+            "glide-compiler-support"        : "com.github.bumptech.glide:compiler:${dependVersion["glide-support"]}",
+            //图片风格转换库。androidx:4.0.0,support:3.1.1
+            "glide-transformations" : "jp.wasabeef:glide-transformations:4.0.0",
+
+            //从拍照或图库选取图片
+            takephoto               : "com.jph.takephoto:takephoto_library:4.1.0",
+
+            //二维码扫描
+            "zxing-lite"		    : "com.king.zxing:zxing-lite:1.1.3-androidx",
+            "zxing-lite-support"	: "com.king.zxing:zxing-lite:1.1.3",
+
+
+            //UI相关
+            //约束布局
+            "constraint-layout"     : "com.android.support.constraint:constraint-layout:1.0.2",
+            //管理片段的库。
+            fragmentation           : "me.yokeyword:fragmentation:1.0.0",
+            //控件与类成员的绑定
+            butterknife             : "com.jakewharton:butterknife:8.8.1",//9.0.0-rc1,该版本会报error: resource android:attr/fontVariationSettings not found
+            "butterknife-compiler"  : "com.jakewharton:butterknife-compiler:8.8.1",
+            //轮播
+            banner                  : "com.youth.banner:banner:1.4.10",
+            //view动画
+            viewanimator            : "com.github.florent37:viewanimator:1.0.5",
+            //多样化TabLayout
+            FlycoTabLayout          : "com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar",
+            //富文本
+            richtext                : "com.zzhoujay.richtext:richtext:2.5.2",
+            //自定义可手动缩放的照片view
+            PhotoView               : "com.github.chrisbanes:PhotoView:2.1.2",
+            //视频播放控件
+            jiaozivideoplayer       : "cn.jzvd:jiaozivideoplayer:7.0.5",
+            //Activity转场动画工具类
+            transitionhelper        : "me.immortalz:transitionhelper:2.3.4",
+            //Android Activity 滑动返回。
+            swipebacklayout         : "cn.bingoogolapple:bga-swipebacklayout:1.2.0@aar",
+            //显示gif动画的自定义ImageView和GifDrawable对象
+            "gif-drawable"          : "pl.droidsonroids.gif:android-gif-drawable:1.2.8",
+            //图表
+            MPAndroidChart          : "com.github.PhilJay:MPAndroidChart:v3.1.0",
+
+            //对话框
+            FlycoDialog             : "com.flyco.dialog:FlycoDialog_Lib:1.3.2@aar",
+            //原生,基本模块
+            "af-material-dialogs-core"          : "com.afollestad.material-dialogs:core:3.1.1",
+            //extension
+            "af-material-dialogs-input"         : "com.afollestad.material-dialogs:input:3.1.1",
+            "af-material-dialogs-files"         : "com.afollestad.material-dialogs:files:3.1.1",
+            "af-material-dialogs-color"         : "com.afollestad.material-dialogs:color:3.1.1",
+            "af-material-dialogs-datetime"      : "com.afollestad.material-dialogs:datetime:3.1.1",
+            "af-material-dialogs-bottomsheets"  : "com.afollestad.material-dialogs:bottomsheets:3.1.1",
+            "af-material-dialogs-lifecycle"     : "com.afollestad.material-dialogs:lifecycle:3.1.1",
+
+            //util包
+            utilcode                : "com.blankj:utilcodex:1.25.9",
+            //json解析
+            fastjson                : "com.alibaba:fastjson:1.1.71.android",
+            //日志打印
+            logger                  : "com.orhanobut:logger:2.2.0",
+
+            //事件总线
+            androideventbus         : "org.simple:androideventbus:1.0.5.1",
+            "greendao-eventbus"     : "org.greenrobot:eventbus:3.1.1",
+
+            //数据库
+            greendao                : "org.greenrobot:greendao:3.2.2",
+            //加密
+            "greendao-db-sqlcipher" : "net.zetetic:android-database-sqlcipher:3.5.6",// This is only needed if you want to use encrypted databases
+            litepal                 : "org.litepal.android:java:3.0.0",
+
+            //维护
+            //bug收集
+            bugly                   : "com.tencent.bugly:crashreport:latest.release",
+            "bugly-native"          : "com.tencent.bugly:nativecrashreport:latest.release",
+            "symtabfileuploader"    : "com.tencent.bugly:symtabfileuploader:latest.release",//bugly符号表文件自动上传插件。在<Project>/build.gradle/buildscript/dependencies中声明。
+            //内存泄漏检测
+            "leakcanary-debug"      : "com.squareup.leakcanary:leakcanary-android:1.6.3",
+            "leakcanary-release"    : "com.squareup.leakcanary:leakcanary-android-no-op:1.5.2",
+
+            //第三方
+            //深圳可视门铃
+            doorbell                : "com.p2p.core:p2p-core:0.3.8",
+            "doorbell-find-local"   : "com.github.jwkj:ShakManger:v1.0.1",
+            //微信sdk
+            "wechat-sdk"            : "com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+",
+
+            //android 4.4以上沉浸式状态栏和沉浸式导航栏管理
+            immersionbar            : "com.gyf.immersionbar:immersionbar:3.0.0",
+
+            //Android应用端的静态服务
+            AndServer               : "com.yanzhenjie:andserver:1.1.4",
+            AndServer2              : "com.yanzhenjie:andserver:2.0.5",
+    ]
+}
+
+//     //support库（compileSdkVersion 27-）
+//     api rootProject.ext.dependencies["support-v4"]
+//     api rootProject.ext.dependencies["appcompat-v7"]
+//     api rootProject.ext.dependencies.design
+//     api rootProject.ext.dependencies.recyclerview
+//     api rootProject.ext.dependencies.cardview
+
+//     //androidx,support库（compileSdkVersion 28+）
+//     api rootProject.ext.dependencies.androidx
+//     api rootProject.ext.dependencies.material
+//     api rootProject.ext.dependencies.constraintlayout
+
+//     //retrofit
+//     api rootProject.ext.dependencies.retrofit2
+//     api rootProject.ext.dependencies["retrofit2-converter-scalars"]
+//     api rootProject.ext.dependencies["retrofit2-converter-gson"]
+//     api rootProject.ext.dependencies["retrofit2-adapter-rxjava2"]
+//     api rootProject.ext.dependencies["okhttp3-logging-interceptor"]
+//     //rxjava
+//     api rootProject.ext.dependencies.rxjava2
+//     api rootProject.ext.dependencies.rxandroid2
+//     //rxlifecycle
+//     implementation rootProject.ext.dependencies.rxlifecycle2
+//     implementation rootProject.ext.dependencies.rxlifecomponents
+//     //权限请求
+//     api rootProject.ext.dependencies.rxpermissions
+//     //dagger
+//     api rootProject.ext.dependencies.dagger
+// //    annotationProcessor rootProject.ext.dependencies["dagger-compiler"]
+//     api rootProject.ext.dependencies["dagger-android"]
+// //    annotationProcessor rootProject.ext.dependencies["dagger-android-processor"]
+//     api rootProject.ext.dependencies["dagger-android-support"]
+//     //RecyclerView辅助
+//     api rootProject.ext.dependencies.BRVAH
+//     api rootProject.ext.dependencies["BRVAH-support"]
+//     api rootProject.ext.dependencies.SmartRefreshLayout
+//     api rootProject.ext.dependencies.SmartRefreshHeader
+//     api rootProject.ext.dependencies.EasySwipeMenuLayout
+//     //路由
+//     api rootProject.ext.dependencies["router-api"]
+// //    annotationProcessor rootProject.ext.dependencies["router-compiler"]
+//     //图片加载
+//     api rootProject.ext.dependencies.glide
+// //    annotationProcessor rootProject.ext.dependencies["glide-compiler"]
+//     api rootProject.ext.dependencies["glide-support"]
+// //    annotationProcessor rootProject.ext.dependencies["glide-compiler-support"]
+//     api rootProject.ext.dependencies["glide-transformations"]
+
+//     //片段管理
+//     api rootProject.ext.dependencies.fragmentation
+//     api rootProject.ext.dependencies["fragmentation-swipeback"]
+//     //bk
+//     api rootProject.ext.dependencies.butterknife
+// //    annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
+//     //tabLayout
+//     api rootProject.ext.dependencies.FlycoTabLayout
+//     //二维码
+//     api rootProject.ext.dependencies["zxing-lite"]
+//     api rootProject.ext.dependencies["zxing-lite-support"]
+//     //轮播
+//     api rootProject.ext.dependencies.banner
+//     //图表
+//     api rootProject.ext.dependencies.MPAndroidChart
+//     //utils
+//     api rootProject.ext.dependencies.utilcode
+//     //json
+//     api rootProject.ext.dependencies.fastjson
+//     //log
+//     api rootProject.ext.dependencies.logger
+//     //db
+//     api rootProject.ext.dependencies.greendao
+//     api rootProject.ext.dependencies["greendao-db-sqlcipher"]
+//     //eventbus
+//     api rootProject.ext.dependencies.eventbus
+//     //维护
+//     api rootProject.ext.dependencies.bugly
+//     api rootProject.ext.dependencies["bugly-native"]
+// //    api rootProject.ext.dependencies["bugly-symtabfileuploader"]
+//     debugApi rootProject.ext.dependencies["leakcanary-debug"]
+//     releaseApi rootProject.ext.dependencies["leakcanary-release"]
+
+
+
+
+    //compiler for above
+//    annotationProcessor rootProject.ext.dependencies["dagger-compiler"]
+//    annotationProcessor rootProject.ext.dependencies["dagger-android-processor"]
+//    annotationProcessor rootProject.ext.dependencies["router-compiler"]
+//    annotationProcessor rootProject.ext.dependencies["glide-compiler"]
+//    annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
