@@ -8,10 +8,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class TimeUtil {
+public class TimeUtils {
 
-    private static final String TAG = "TimeUtil";
-    public static final DateFormat DEFAULT_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final String TAG = "TimeUtils";
+    public static final DateFormat DEFAULT_DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static final DateFormat DEFAULT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     public static final DateFormat DEFAULT_TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
     private static final DateFormat FORMAT_LOG_NAME_FILE = new SimpleDateFormat("yyyyMMdd");
@@ -45,21 +45,25 @@ public class TimeUtil {
     }
 
     public static String getDefaultDateTime() {
-        return DEFAULT_FORMAT.format(new Date(getSystemTime()));
+        return DEFAULT_DATE_TIME_FORMAT.format(new Date(getSystemTime()));
+    }
+
+    public static String getDefaultDateTime(long timeMilli) {
+        return DEFAULT_DATE_TIME_FORMAT.format(new Date(timeMilli));
     }
 
     /**
      * 获取DateTime类型格式的当前时间
      */
     public static String getMysqlDateTimeFormat() {
-        return DEFAULT_FORMAT.format(new Date(getSystemTime()));
+        return DEFAULT_DATE_TIME_FORMAT.format(new Date(getSystemTime()));
     }
 
     /**
      * 获取DateTime类型格式的当前时间
      */
     public static String getMysqlDateTimeFormat(long timeMilli) {
-        return DEFAULT_FORMAT.format(new Date(timeMilli));
+        return DEFAULT_DATE_TIME_FORMAT.format(new Date(timeMilli));
     }
 
     /**
@@ -78,14 +82,14 @@ public class TimeUtil {
      * 获取一天开始或结束的DateTime类型格式的时间
      */
     public static String getDayBeginOrEndMysqlDateTimeFormat(long timeMilli, int flag) {
-        return DEFAULT_FORMAT.format(getDateBeginOrEnd(new Date(timeMilli), flag));
+        return DEFAULT_DATE_TIME_FORMAT.format(getDateBeginOrEnd(new Date(timeMilli), flag));
     }
 
     /**
      * 获取一天开始或结束的DateTime类型格式的时间
      */
     public static String getDayBeginOrEndMysqlDateTimeFormat(int flag) {
-        return DEFAULT_FORMAT.format(getDateBeginOrEnd(new Date(getSystemTime()), flag));
+        return DEFAULT_DATE_TIME_FORMAT.format(getDateBeginOrEnd(new Date(getSystemTime()), flag));
     }
 
     /**

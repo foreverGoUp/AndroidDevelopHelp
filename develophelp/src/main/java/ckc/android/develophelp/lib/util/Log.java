@@ -84,7 +84,7 @@ public class Log {
      * 保存到文件
      */
     public static void saveToFile(String tag, String content) {
-        sLogToFileVector.add("\n" + TimeUtil.getDefaultDateTime() + " " + tag + " " + content);
+        sLogToFileVector.add("\n" + TimeUtils.getDefaultDateTime() + " " + tag + " " + content);
         if (sLogToFileVector.size() >= MAX_CACHE_COUNT) {
             FileUtil.writeToLogoutFile(sLogToFileVector.toString());
             sLogToFileVector.clear();

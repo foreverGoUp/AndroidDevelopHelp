@@ -289,7 +289,7 @@ public class FileUtil {
 
     private static String[] getDate() {
         String[] ret = new String[3];
-        Date date = new Date(TimeUtil.getSystemTime());
+        Date date = new Date(TimeUtils.getSystemTime());
         SimpleDateFormat dateFormat = new SimpleDateFormat("", Locale.SIMPLIFIED_CHINESE);
         dateFormat.applyPattern("yyyy");
         ret[0] = dateFormat.format(date);
@@ -395,7 +395,7 @@ public class FileUtil {
      * */
     public static String getLogoutFileName() {
         String LOG_FILE_NAME_FORMAT = "logout-%s.log";
-        return String.format(LOG_FILE_NAME_FORMAT, TimeUtil.getLogNameTime());
+        return String.format(LOG_FILE_NAME_FORMAT, TimeUtils.getLogNameTime());
     }
 
 
