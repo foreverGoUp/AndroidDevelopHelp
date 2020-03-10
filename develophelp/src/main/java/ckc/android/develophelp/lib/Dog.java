@@ -12,7 +12,7 @@ public class Dog {
 
     public int mAge = 10;
 
-    public void setAge(int age) {
+    public void setAge2(int age) {
         mAge = age;
     }
 }
