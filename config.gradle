@@ -42,8 +42,6 @@ ext {
     //注意：带”-“的名称必须以双引号包围，否则会报错。
     dependencies = [
             //我自己的库
-            //mvp架构依赖库
-            KcMvp                   : "com.github.foreverGoUp:KcMvp:1.0.1",
 
             //android-support（compileSdkVersion 27-）
             "support-v4"            : "com.android.support:support-v4:${dependVersion.support}",
