@@ -15,7 +15,7 @@ ext {
             compileSdkVersion      : 28,
             buildToolsVersion      : "29.0.2",
             applicationId          : "ckc.android.app",
-            minSdkVersion          : 21,//android 5.0
+            minSdkVersion          : 19,//android 5.0
             targetSdkVersion       : 28,//android 9.0
             versionCode            : 1,
             versionName            : "1.0.0"
