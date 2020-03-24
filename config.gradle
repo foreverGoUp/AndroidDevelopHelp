@@ -82,8 +82,9 @@ ext {
             rxandroid2              : "io.reactivex.rxjava2:rxandroid:2.1.1",
             //rx binding，基于BK，引用布局ID直接对控件进行属性设置和监听回调。这只是一个平台库，github上还有其他可以依赖的已封装控件库。
             rxbinding               : "com.jakewharton.rxbinding3:rxbinding:3.0.0",
-            //rx 界面生命周期与请求的关联
+            //rx 界面生命周期
             rxlifecycle2            : "com.trello.rxlifecycle2:rxlifecycle:${dependVersion.rxlifecycle2}",
+            "rxlifecycle2-android"  : "com.trello.rxlifecycle2:rxlifecycle-android:${dependVersion.rxlifecycle2}",
             rxlifecomponents        : "com.trello.rxlifecycle2:rxlifecycle-components:${dependVersion.rxlifecycle2}",
             //rx 权限请求
             rxpermissions           : "com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar",
