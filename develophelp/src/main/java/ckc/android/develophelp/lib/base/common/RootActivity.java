@@ -2,26 +2,41 @@ package ckc.android.develophelp.lib.base.common;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.CallSuper;
+import android.support.annotation.CheckResult;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.trello.rxlifecycle2.LifecycleProvider;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.RxLifecycle;
+import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
+
 import ckc.android.develophelp.lib.immersive.StatusBarUtil;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * 根活动
  * 2019-12-01 ckc
  */
-public abstract class RootActivity extends AppCompatActivity {
+public abstract class RootActivity extends AppCompatActivity implements LifecycleProvider<ActivityEvent> {
 
     protected final String TAG = this.getClass().getSimpleName();
     //是否调试
     public static boolean DEBUG = false;
+    //rx lifecycle
+    private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (DEBUG) Log.e(TAG, "[DEBUG] onCreate");
+        //rx lifecycle
+        lifecycleSubject.onNext(ActivityEvent.CREATE);
         //如果不是子类设置内容视图，则交给我来设置
         if (!onConfigSubActivitySetContentView()) {
             setContentView(onConfigContentViewLayout());
@@ -66,27 +81,36 @@ public abstract class RootActivity extends AppCompatActivity {
     }
 
     @Override
+    @CallSuper
     protected void onStart() {
         super.onStart();
         if (DEBUG) Log.e(TAG, "[DEBUG] onStart");
+        //rx lifecycle
+        lifecycleSubject.onNext(ActivityEvent.START);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if (DEBUG) Log.e(TAG, "[DEBUG] onResume");
+        //rx lifecycle
+        lifecycleSubject.onNext(ActivityEvent.RESUME);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         if (DEBUG) Log.e(TAG, "[DEBUG] onPause");
+        //rx lifecycle
+        lifecycleSubject.onNext(ActivityEvent.PAUSE);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         if (DEBUG) Log.e(TAG, "[DEBUG] onStop");
+        //rx lifecycle
+        lifecycleSubject.onNext(ActivityEvent.STOP);
     }
 
     @Override
@@ -105,6 +129,8 @@ public abstract class RootActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (DEBUG) Log.e(TAG, "[DEBUG] onDestroy");
+        //rx lifecycle
+        lifecycleSubject.onNext(ActivityEvent.DESTROY);
     }
 
     /**
@@ -135,5 +161,26 @@ public abstract class RootActivity extends AppCompatActivity {
      * 界面初始化
      */
     protected abstract void onInit(Bundle savedInstanceState);
+
+    @Override
+    @NonNull
+    @CheckResult
+    public final Observable<ActivityEvent> lifecycle() {
+        return lifecycleSubject.hide();
+    }
+
+    @Override
+    @NonNull
+    @CheckResult
+    public final <T> LifecycleTransformer<T> bindUntilEvent(@NonNull ActivityEvent event) {
+        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
+    }
+
+    @Override
+    @NonNull
+    @CheckResult
+    public final <T> LifecycleTransformer<T> bindToLifecycle() {
+        return RxLifecycleAndroid.bindActivity(lifecycleSubject);
+    }
 
 }

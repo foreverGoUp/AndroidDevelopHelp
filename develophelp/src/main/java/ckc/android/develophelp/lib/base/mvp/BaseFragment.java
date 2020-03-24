@@ -1,23 +1,11 @@
 package ckc.android.develophelp.lib.base.mvp;
 
-import android.os.Bundle;
 import android.support.annotation.CallSuper;
-import android.support.annotation.CheckResult;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
 import ckc.android.develophelp.lib.base.common.LazyFragment;
 import ckc.android.develophelp.lib.util.ToastUtils;
-import com.trello.rxlifecycle2.LifecycleProvider;
-import com.trello.rxlifecycle2.LifecycleTransformer;
-import com.trello.rxlifecycle2.RxLifecycle;
-import com.trello.rxlifecycle2.android.FragmentEvent;
-import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
-
-import io.reactivex.Observable;
-import io.reactivex.subjects.BehaviorSubject;
 
 
 /**
@@ -31,69 +19,17 @@ import io.reactivex.subjects.BehaviorSubject;
  * 1、页面接收和不接收表达者数据的时机
  * 2、表达者实例
  */
-public abstract class BaseFragment<P extends BaseContract.IBasePresenter> extends LazyFragment implements BaseContract.IBaseView, LifecycleProvider<FragmentEvent> {
+public abstract class BaseFragment<P extends BaseContract.IBasePresenter> extends LazyFragment implements BaseContract.IBaseView {
 
     //是否调试
     public static boolean DEBUG = false;
-    //rx lifecycle
-    private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
     //通用表达者声明
     private P mPresenter;
-
-    @Override
-    @NonNull
-    @CheckResult
-    public final Observable<FragmentEvent> lifecycle() {
-        return lifecycleSubject.hide();
-    }
-
-    @Override
-    @NonNull
-    @CheckResult
-    public final <T> LifecycleTransformer<T> bindUntilEvent(@NonNull FragmentEvent event) {
-        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
-    }
-
-    @Override
-    @NonNull
-    @CheckResult
-    public final <T> LifecycleTransformer<T> bindToLifecycle() {
-        return RxLifecycleAndroid.bindFragment(lifecycleSubject);
-    }
-
-    @Override
-    @CallSuper
-    public void onAttach(android.app.Activity activity) {
-        super.onAttach(activity);
-        lifecycleSubject.onNext(FragmentEvent.ATTACH);
-    }
-
-    @Override
-    @CallSuper
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        lifecycleSubject.onNext(FragmentEvent.CREATE);
-    }
-
-    @Override
-    @CallSuper
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        lifecycleSubject.onNext(FragmentEvent.CREATE_VIEW);
-    }
-
-    @Override
-    @CallSuper
-    public void onStart() {
-        super.onStart();
-        lifecycleSubject.onNext(FragmentEvent.START);
-    }
 
     @Override
     @CallSuper
     public void onResume() {
         super.onResume();
-        lifecycleSubject.onNext(FragmentEvent.RESUME);
         //页面接收表达者数据
         if (onConfigPresenterAttachViewWhileOnResume()) {
             doPresenterAttachView();
@@ -102,43 +38,13 @@ public abstract class BaseFragment<P extends BaseContract.IBasePresenter> extend
 
     @Override
     @CallSuper
-    public void onPause() {
-        lifecycleSubject.onNext(FragmentEvent.PAUSE);
-        super.onPause();
-    }
-
-    @Override
-    @CallSuper
     public void onStop() {
-        lifecycleSubject.onNext(FragmentEvent.STOP);
         super.onStop();
         //页面不接收表达者数据
         if (onConfigPresenterDetachViewWhileOnStop()) {
             doPresenterDetachView();
         }
     }
-
-    @Override
-    @CallSuper
-    public void onDestroyView() {
-        lifecycleSubject.onNext(FragmentEvent.DESTROY_VIEW);
-        super.onDestroyView();
-    }
-
-    @Override
-    @CallSuper
-    public void onDestroy() {
-        lifecycleSubject.onNext(FragmentEvent.DESTROY);
-        super.onDestroy();
-    }
-
-    @Override
-    @CallSuper
-    public void onDetach() {
-        lifecycleSubject.onNext(FragmentEvent.DETACH);
-        super.onDetach();
-    }
-
 
     /**
      * 执行页面接收表达者数据
