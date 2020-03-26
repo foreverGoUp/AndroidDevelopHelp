@@ -34,7 +34,7 @@ dependencies {
     implementation rootProject.ext.dependencies["appcompat-v7"]
     //rx lifecycle
     api rootProject.ext.dependencies.rxlifecycle2
-    implementation rootProject.ext.dependencies["rxlifecycle2-android"]
+    api rootProject.ext.dependencies["rxlifecycle2-android"]
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
