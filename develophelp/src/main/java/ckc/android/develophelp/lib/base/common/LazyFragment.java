@@ -15,14 +15,13 @@ import android.view.ViewGroup;
  *
  * 建议当片段通过viewpager adapter展示时使用懒加载方式。
  * 懒加载相关方法
- * onActivityCreated、setUserVisibleHint、lazyLoad、onLazyLoad、onUserVisibleAfterLazyLoad、onResumeWithUserVisible
+ * onActivityCreated、setUserVisibleHint、lazyLoad、onLazyLoad、onUserVisibleAfterLazyLoad、onResumeWithUserVisibleAfterLazyLoad
  */
 public abstract class LazyFragment extends RootFragment {
 
+    public static boolean DEBUG = false;
     private boolean mIsPreparedForLazyLoad = false;//是否为懒加载的视图准备好了
     private boolean mIsLazyLoaded = false;//是否已经懒加载
-    private boolean mIsOnResumeCallBacked = false;//是否第一次onResume()被回调过
-    public static boolean DEBUG = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,10 +49,19 @@ public abstract class LazyFragment extends RootFragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (DEBUG)
             Log.e(TAG, hashCode() + " setUserVisibleHint >>>>>>>>>>>" + isVisibleToUser + ">>>>>>>>>>>");
+        //当片段被回收了，会完整执行以下生命周期
+        if (getView() == null) {
+            mIsLazyLoaded = false;
+            mIsPreparedForLazyLoad = false;
+        }
         if (isVisibleToUser && mIsLazyLoaded) {
             onUserVisibleAfterLazyLoad();
         }
-        lazyLoad();
+        //懒加载
+        if (isVisibleToUser && mIsPreparedForLazyLoad && !mIsLazyLoaded) {
+            mIsLazyLoaded = true;
+            onLazyLoad();
+        }
     }
 
     @Nullable
@@ -61,6 +69,9 @@ public abstract class LazyFragment extends RootFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (DEBUG)
             Log.e(TAG, hashCode() + " onCreateView >>>>>>>>>>>>>>>>>>>>>>");
+        if (super.mViewSoftReference.get() != null) {
+            mIsLazyLoaded = true;
+        }
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -79,7 +90,6 @@ public abstract class LazyFragment extends RootFragment {
         super.onActivityCreated(savedInstanceState);
         if (DEBUG) Log.e(TAG, hashCode() + " onActivityCreated >>>>>>>>>>>>>>>>>>>>>>");
         mIsPreparedForLazyLoad = true;
-        lazyLoad();
     }
 
     @Override
@@ -89,16 +99,6 @@ public abstract class LazyFragment extends RootFragment {
 
     }
 
-
-    /**
-     * 懒加载
-     */
-    private void lazyLoad() {
-        if (getUserVisibleHint() && mIsPreparedForLazyLoad && !mIsLazyLoaded) {
-            mIsLazyLoaded = true;
-            onLazyLoad();
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////////////
     // 懒加载回调
@@ -125,10 +125,12 @@ public abstract class LazyFragment extends RootFragment {
 
     /**
      * 当片段通过viewpager adapter展示时。
-     * 懒加载之后，业务若需要片段每次活动从后台返回前台并处于可见时刷新数据则重写该方法执行启动刷新，该方法与onUserVisibleAfterLazyLoad不会被同时回调。
+     * 懒加载之后，业务若需要片段每次活动从后台返回前台并处于可见时刷新数据则重写该方法执行启动刷新
+     * ，该方法与onUserVisibleAfterLazyLoad和onLazyLoad不会被同时回调。
      */
-    protected void onResumeWithUserVisible() {
-        if (DEBUG) Log.e(TAG, hashCode() + " onResumeWithUserVisible -------------------------");
+    protected void onResumeWithUserVisibleAfterLazyLoad() {
+        if (DEBUG)
+            Log.e(TAG, hashCode() + " onResumeWithUserVisibleAfterLazyLoad -------------------------");
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -143,10 +145,13 @@ public abstract class LazyFragment extends RootFragment {
     public void onResume() {
         super.onResume();
         if (DEBUG) Log.e(TAG, hashCode() + " onResume >>>>>>>>>>>>>>>>>>>>>>");
-        if (mIsOnResumeCallBacked && getUserVisibleHint()) {
-            onResumeWithUserVisible();
-        } else {
-            mIsOnResumeCallBacked = true;
+        if (getUserVisibleHint()) {
+            if (!mIsLazyLoaded) {
+                mIsLazyLoaded = true;
+                onLazyLoad();
+            } else {
+                onResumeWithUserVisibleAfterLazyLoad();
+            }
         }
     }
 

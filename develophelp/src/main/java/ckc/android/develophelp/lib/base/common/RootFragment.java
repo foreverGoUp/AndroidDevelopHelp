@@ -17,6 +17,8 @@ import com.trello.rxlifecycle2.RxLifecycle;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 
+import java.lang.ref.SoftReference;
+
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
@@ -31,19 +33,22 @@ public abstract class RootFragment extends Fragment implements LifecycleProvider
     public static boolean DEBUG = false;
     //rx lifecycle
     private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
+    //root view，内存不足时可以回收掉
+    SoftReference<View> mViewSoftReference;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        if (getView() == null) {
+        View view = mViewSoftReference.get();
+        if (view == null) {
             if (DEBUG) Log.e(TAG, hashCode() + "[DEBUG] onCreateView inflate");
-            View view = inflater.inflate(onConfigViewLayout(), container, false);
+            view = inflater.inflate(onConfigViewLayout(), container, false);
             OnInit(view);
-            return view;
-        } else {
-            return getView();
+
+            mViewSoftReference = new SoftReference<>(view);
         }
+        return view;
     }
 
     @Override
