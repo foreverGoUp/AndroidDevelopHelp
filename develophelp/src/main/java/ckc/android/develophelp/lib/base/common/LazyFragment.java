@@ -10,12 +10,35 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * 基本懒加载片段
- * 20191130 ckc
+ * 懒加载片段
+ * created by ckc on 20191130
+ * successfulpeter@163.com
  *
- * 建议当片段通过viewpager adapter展示时使用懒加载方式。
+ * 建议当片段通过viewpager adapter展示时使用懒加载方式。fm方式也可以模拟使用此懒加载方式。
+ * 参考代码：
+ * private void switchFragment(int pos, boolean init){
+ *         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+ *         if (!init){
+ *             if (mCurrentTabPos != -1){
+ *                 Fragment hideFragment = getFragment(mCurrentTabPos);
+ *                 fragmentTransaction.hide(hideFragment);
+ * //            hideFragment.setUserVisibleHint(false);//模拟片段交给vp adapter显示以致可以使用片段的懒加载方法
+ *             }
+ *         }
+ *
+ *         mCurrentTabPos = pos;
+ *         Fragment showFragment = getFragment(pos);
+ * //        showFragment.setUserVisibleHint(true);//模拟片段交给vp adapter显示以致可以使用片段的懒加载方法
+ *         if (!showFragment.isAdded()) {
+ *             fragmentTransaction.add(R.id.fragment_container, showFragment, mFragmentTags[pos]);
+ *         }
+ *         fragmentTransaction.show(showFragment).commitAllowingStateLoss();
+ *     }
+ *
  * 懒加载相关方法
- * onActivityCreated、setUserVisibleHint、lazyLoad、onLazyLoad、onUserVisibleAfterLazyLoad、onResumeWithUserVisibleAfterLazyLoad
+ * onActivityCreated、setUserVisibleHint、onLazyLoad、onUserVisibleAfterLazyLoad、onResumeWithUserVisibleAfterLazyLoad
+ *
+ * 解决片段回收对懒加载的影响。
  */
 public abstract class LazyFragment extends RootFragment {
 
