@@ -25,7 +25,8 @@ import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * 根片段
- * 2019-12-01 ckc
+ * created by ckc on 2019-12-01
+ * successfulpeter@163.com
  */
 public abstract class RootFragment extends Fragment implements LifecycleProvider<FragmentEvent> {
 
@@ -34,7 +35,7 @@ public abstract class RootFragment extends Fragment implements LifecycleProvider
     //rx lifecycle
     private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
     //root view，内存不足时可以回收掉
-    SoftReference<View> mViewSoftReference;
+    SoftReference<View> mViewSoftReference = new SoftReference<>(null);
 
     @Nullable
     @Override

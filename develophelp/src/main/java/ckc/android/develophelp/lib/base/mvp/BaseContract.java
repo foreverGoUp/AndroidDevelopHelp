@@ -7,8 +7,9 @@ import com.trello.rxlifecycle2.LifecycleTransformer;
 import java.util.List;
 
 /**
- * Created by peter on 2018/3/12.
  * 基本合约
+ * created by ckc on 2018/3/12
+ * successfulpeter@163.com
  */
 
 public interface BaseContract {

@@ -10,6 +10,8 @@ import ckc.android.develophelp.lib.util.ToastUtils;
 
 /**
  * 基本界面类
+ * created by ckc on 2019-12-01
+ * successfulpeter@163.com
  * <p>
  * 实现了：
  * -子类调用父类的能力：getPresenter()

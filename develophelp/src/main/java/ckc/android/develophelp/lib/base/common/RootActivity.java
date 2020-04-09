@@ -21,7 +21,8 @@ import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * 根活动
- * 2019-12-01 ckc
+ * created by ckc on 2019-12-01
+ * successfulpeter@163.com
  */
 public abstract class RootActivity extends AppCompatActivity implements LifecycleProvider<ActivityEvent> {
 

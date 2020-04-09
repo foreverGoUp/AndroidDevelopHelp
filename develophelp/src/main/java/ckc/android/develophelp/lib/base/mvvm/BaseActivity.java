@@ -5,7 +5,10 @@ import android.databinding.ViewDataBinding;
 
 import ckc.android.develophelp.lib.base.common.RootActivity;
 
-
+/**
+ * created by ckc on 2019-12-01
+ * successfulpeter@163.com
+ */
 public abstract class BaseActivity<DB extends ViewDataBinding, VM extends BaseViewModel> extends RootActivity {
 
     protected DB mDataBinding;

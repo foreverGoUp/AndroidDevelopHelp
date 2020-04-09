@@ -3,8 +3,9 @@ package ckc.android.develophelp.lib.base.mvp;
 import android.content.Context;
 
 /**
- * Created by peter on 2018/3/10.
  * 基本表达者类
+ * created by ckc on 2019-12-01
+ * successfulpeter@163.com
  * <p>
  * 实现了
  * - 子类调用父类的能力：getContext、getView

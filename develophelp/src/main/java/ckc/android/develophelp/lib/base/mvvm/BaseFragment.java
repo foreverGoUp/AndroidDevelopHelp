@@ -7,7 +7,10 @@ import android.view.View;
 import ckc.android.develophelp.lib.base.common.LazyFragment;
 
 
-
+/**
+ * created by ckc on 2019-12-01
+ * successfulpeter@163.com
+ */
 public abstract class BaseFragment<DB extends ViewDataBinding, VM extends BaseViewModel> extends LazyFragment {
 
     protected DB mDataBinding;
