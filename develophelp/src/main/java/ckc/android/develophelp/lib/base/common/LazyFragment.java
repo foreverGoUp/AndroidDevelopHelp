@@ -14,6 +14,7 @@ import android.view.ViewGroup;
  * created by ckc on 20191130
  * successfulpeter@163.com
  *
+ *
  * 建议当片段通过viewpager adapter展示时使用懒加载方式。fm方式也可以模拟使用此懒加载方式。
  * 参考代码：
  * private void switchFragment(int pos, boolean init){
