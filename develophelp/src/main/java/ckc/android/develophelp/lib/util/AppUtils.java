@@ -1,12 +1,14 @@
 package ckc.android.develophelp.lib.util;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.FileProvider;
@@ -118,6 +120,16 @@ public class AppUtils {
     }
 
     /**
+     * 隐藏软键盘
+     *
+     * @param activity
+     */
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager im = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        im.hideSoftInputFromWindow(activity.getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    /**
      * 获得包名
      * 获得版本名称
      */
@@ -163,6 +175,18 @@ public class AppUtils {
         }
     }
 
+    /**
+     * app类初始化应用语言
+     * private static void initAppLanguage(Context context) {
+     * String userSetLang = UserTool.getUserSetLanguageTag();
+     * if (userSetLang == null) {
+     * Log.e(TAG, "正在设置默认语言。");
+     * AppUtils.changeLanguage(context, AppUtils.getDefaultLanguage());
+     * } else {
+     * AppUtils.changeLanguage(context, userSetLang);
+     * }
+     * }
+     */
     public static boolean changeLanguage(Context context, String languageTag) {
         Locale locale = null;
         switch (languageTag) {
@@ -197,6 +221,7 @@ public class AppUtils {
      */
     public static String getDefaultLanguage() {
         String languageType = LANGUAGE_EN_US;
+
         Locale locale = Locale.getDefault();
         String lang = locale.getLanguage();
         if (lang.equals(Locale.SIMPLIFIED_CHINESE.getLanguage())) {
@@ -273,5 +298,20 @@ public class AppUtils {
     public static void startActivity(FragmentActivity activity, Class clazz, boolean finish) {
         activity.startActivity(new Intent(activity, clazz));
         if (finish) activity.finish();
+    }
+
+    /**
+     * 用广播方式发送数据给其他App
+     *
+     * @param action 想要其他app干什么，app之间自定义
+     * @param dstAppId 目标app的应用ID，如com.xxx.ad
+     * @param dstReceiverPackageName 目标接收器完整包名，如com.xxx.tool.BootCompleteReceiver
+     */
+    public static void sendDataToOtherAppByBroadcast(Context context, String action, String dstAppId, String dstReceiverPackageName, Bundle data) {
+        Intent intent = new Intent(action);
+        ComponentName componentName = new ComponentName(dstAppId, dstReceiverPackageName);
+        intent.setComponent(componentName);
+        if (data != null) intent.putExtras(data);
+        context.sendBroadcast(intent);
     }
 }

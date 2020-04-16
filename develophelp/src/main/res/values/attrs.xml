@@ -18,4 +18,30 @@
         <!--文本样式-->
         <attr name="android:textStyle" tools:ignore="ResourceName"/>
     </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <!--控件类型-->
+        <attr name="type" format="enum">
+            <enum name="circle" value="0" />
+            <enum name="rect" value="1" />
+        </attr>
+        <!--当type==rect时的角半径-->
+        <attr name="corner_radius" format="dimension|reference" />
+        <!--当type==circle时的边界圆圈宽度-->
+        <attr name="border_width" format="dimension|reference"></attr>
+        <!--当type==circle时的边界圆圈颜色-->
+        <attr name="border_color" format="color|reference"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="AvatarOverlapListView">
+        <!--显示风格，ltr:从左到右-->
+        <attr name="display_style" format="enum">
+            <enum name="ltr" value="0" />
+            <enum name="rtl" value="1" />
+        </attr>
+        <!--重叠宽度-->
+        <attr name="overlap_width" format="dimension|reference"></attr>
+        <!--头像宽度-->
+        <attr name="avatar_width" format="dimension|reference"></attr>
+    </declare-styleable>
 </resources>
