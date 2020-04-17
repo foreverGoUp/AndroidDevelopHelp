@@ -19,39 +19,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import ckc.android.develophelp.lib.R;
-
 
 /**
  * 方形验证码控件
  * ckc 20200215
  *
  * 功能：
- * 个性化参数设置，见《支持属性》；
  * 输入一个数字后，选中框自动移动到下一个框；
  * 删除一个数字后，选中框自动移动到上一个框；
  * 输入完成后回调；
- *
- *
- * 支持属性：
- *<declare-styleable name="SquareVerifyCodeView">
- *         <!--方框数量-->
- *         <attr name="svcv_square_number" format="integer"/>
- *         <!--方框宽度-->
- *         <attr name="svcv_square_width" format="dimension|reference"/>
- *         <!--方框间隔-->
- *         <attr name="svcv_square_interval" format="dimension|reference"/>
- *         <!--方框背景在选中状态的资源-->
- *         <attr name="svcv_square_selected_bg" format="reference"/>
- *         <!--方框背景在未选中状态的资源-->
- *         <attr name="svcv_square_unselected_bg" format="reference"/>
- *         <!--文本大小-->
- *         <attr name="android:textSize" tools:ignore="ResourceName"/>
- *         <!--文本颜色-->
- *         <attr name="android:textColor" tools:ignore="ResourceName"/>
- *         <!--文本样式-->
- *         <attr name="android:textStyle" tools:ignore="ResourceName"/>
- *     </declare-styleable>
+ * 个性化属性，见声明文件。
  * */
 public class SquareVerifyCodeView extends RelativeLayout {
 
@@ -65,6 +42,8 @@ public class SquareVerifyCodeView extends RelativeLayout {
     private TextView[] mTvSquares;
 
     private OnVerifyCodeListener mOnVerifyCodeListener;
+
+    private int mWidth, mHeight;
 
     public SquareVerifyCodeView(Context context) {
         this(context, null);
@@ -86,38 +65,30 @@ public class SquareVerifyCodeView extends RelativeLayout {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes){
         //读取属性值
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SquareVerifyCodeView);
-        mSquareNumber = typedArray.getInteger(R.styleable.SquareVerifyCodeView_svcv_square_number, mSquareNumber);
-        mSquareWidth = typedArray.getDimensionPixelSize(R.styleable.SquareVerifyCodeView_svcv_square_width, mSquareWidth);
-        mSquareInterval = typedArray.getDimensionPixelSize(R.styleable.SquareVerifyCodeView_svcv_square_interval, mSquareInterval);
-        mSquareSelectedBg = typedArray.getDrawable(R.styleable.SquareVerifyCodeView_svcv_square_selected_bg);
-        mSquareUnselectedBg = typedArray.getDrawable(R.styleable.SquareVerifyCodeView_svcv_square_unselected_bg);
-        mTextSize = (int) typedArray.getDimension(R.styleable.SquareVerifyCodeView_android_textSize, mTextSize);
-        mTextColor = typedArray.getColorStateList(R.styleable.SquareVerifyCodeView_android_textColor);
-        mTextStyle = typedArray.getInt(R.styleable.SquareVerifyCodeView_android_textStyle, mTextStyle);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, ckc.android.develophelp.lib.R.styleable.SquareVerifyCodeView);
+        mSquareNumber = typedArray.getInteger(ckc.android.develophelp.lib.R.styleable.SquareVerifyCodeView_svcv_square_number, mSquareNumber);
+        mSquareWidth = typedArray.getDimensionPixelSize(ckc.android.develophelp.lib.R.styleable.SquareVerifyCodeView_svcv_square_width, mSquareWidth);
+        mSquareInterval = typedArray.getDimensionPixelSize(ckc.android.develophelp.lib.R.styleable.SquareVerifyCodeView_svcv_square_interval, mSquareInterval);
+        mSquareSelectedBg = typedArray.getDrawable(ckc.android.develophelp.lib.R.styleable.SquareVerifyCodeView_svcv_square_selected_bg);
+        mSquareUnselectedBg = typedArray.getDrawable(ckc.android.develophelp.lib.R.styleable.SquareVerifyCodeView_svcv_square_unselected_bg);
+        mTextSize = (int) typedArray.getDimension(ckc.android.develophelp.lib.R.styleable.SquareVerifyCodeView_android_textSize, mTextSize);
+        mTextColor = typedArray.getColorStateList(ckc.android.develophelp.lib.R.styleable.SquareVerifyCodeView_android_textColor);
+        mTextStyle = typedArray.getInt(ckc.android.develophelp.lib.R.styleable.SquareVerifyCodeView_android_textStyle, mTextStyle);
         typedArray.recycle();
+
+        mWidth = mSquareWidth * mSquareNumber + mSquareInterval * (mSquareNumber - 1);
+        mHeight = mSquareWidth;
 
         fillView();
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int width = 0;
-        int height = 0;
-
-        width = mSquareWidth * mSquareNumber + mSquareInterval * (mSquareNumber - 1);
-        height = mSquareWidth;
-        setMeasuredDimension(width, height);
-    }
-
     private void fillView(){
-        LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        LayoutParams lpEt = new LayoutParams(mWidth, mHeight);
 
         //填充EditText控件，用于获取焦点
         EditText editText = new EditText(getContext());
         mEditText = editText;
-        editText.setLayoutParams(lp);
+        editText.setLayoutParams(lpEt);
         editText.setCursorVisible(false);//隐藏光标
         editText.setBackground(null);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -125,7 +96,7 @@ public class SquareVerifyCodeView extends RelativeLayout {
         //填充LinearLayout控件
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        linearLayout.setLayoutParams(lp);
+        linearLayout.setLayoutParams(lpEt);
         //填充TextView控件,用来显示输入数字
         mTvSquares = new TextView[mSquareNumber];
         LayoutParams tvLp = new LayoutParams(mSquareWidth, mSquareWidth);
@@ -135,7 +106,6 @@ public class SquareVerifyCodeView extends RelativeLayout {
             TextView textView = new TextView(getContext());
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
             textView.setTextColor(mTextColor);
-            textView.setBackground(mSquareSelectedBg);
             textView.setTypeface(Typeface.defaultFromStyle(mTextStyle));
             textView.setGravity(Gravity.CENTER);
 
