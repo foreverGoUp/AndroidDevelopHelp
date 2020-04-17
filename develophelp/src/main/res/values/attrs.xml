@@ -19,6 +19,11 @@
         <attr name="android:textStyle" tools:ignore="ResourceName"/>
     </declare-styleable>
 
+    <declare-styleable name="GradientColorTextView">
+        <attr name="startColor" format="color|reference" />
+        <attr name="endColor" format="color|reference" />
+    </declare-styleable>
+
     <declare-styleable name="CircleImageView">
         <!--控件类型-->
         <attr name="type" format="enum">
