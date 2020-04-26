@@ -1,5 +1,6 @@
 package ckc.android.develophelp.lib.base.common;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.CallSuper;
@@ -35,7 +36,8 @@ public abstract class RootActivity extends AppCompatActivity implements Lifecycl
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         int statusBarColor = onConfigStatusBarBackgroundColor();
-        if (statusBarColor != -1) StatusBarUtil.setStatusBarColor(this, statusBarColor);
+        if (statusBarColor != Color.TRANSPARENT)
+            StatusBarUtil.setStatusBarColor(this, statusBarColor);
 
         super.onCreate(savedInstanceState);
         if (DEBUG) Log.e(TAG, "[DEBUG] onCreate");
@@ -167,8 +169,13 @@ public abstract class RootActivity extends AppCompatActivity implements Lifecycl
 
     /**
      * 配置状态栏背景色
+     * 默认返回透明值，但不设置状态栏背景为透明。若需要配置状态栏背景为透明则重写onConfigStatusBarTransparent()
      */
-    protected abstract int onConfigStatusBarBackgroundColor();
+    protected int onConfigStatusBarBackgroundColor() {
+        return Color.TRANSPARENT;
+    }
+
+
 
     /**
      * 界面初始化
