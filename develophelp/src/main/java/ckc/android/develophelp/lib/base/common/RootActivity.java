@@ -34,16 +34,23 @@ public abstract class RootActivity extends AppCompatActivity implements Lifecycl
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        int statusBarColor = onConfigStatusBarBackgroundColor();
+        if (statusBarColor != -1) StatusBarUtil.setStatusBarColor(this, statusBarColor);
+
         super.onCreate(savedInstanceState);
         if (DEBUG) Log.e(TAG, "[DEBUG] onCreate");
+
         //rx lifecycle
         lifecycleSubject.onNext(ActivityEvent.CREATE);
+
         //如果不是子类设置内容视图，则交给我来设置
         if (!onConfigSubActivitySetContentView()) {
             setContentView(onConfigContentViewLayout());
         }
+
         //状态栏
         changeStatusBar();
+
         //初始化
         onInit(savedInstanceState);
     }
@@ -154,9 +161,14 @@ public abstract class RootActivity extends AppCompatActivity implements Lifecycl
      * */
     protected abstract boolean onConfigStatusBarTransparent();
     /**
-     * 配置根状态栏黑色主题
+     * 配置状态栏黑色主题
      * */
     protected abstract boolean onConfigStatusBarDarkTheme();
+
+    /**
+     * 配置状态栏背景色
+     */
+    protected abstract int onConfigStatusBarBackgroundColor();
 
     /**
      * 界面初始化
