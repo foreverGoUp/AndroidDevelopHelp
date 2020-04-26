@@ -202,7 +202,8 @@ public class CircleImageView extends AppCompatImageView {
                 //画图片
                 canvas.drawCircle(mRadius, mRadius, mRadius, mBitmapPaint);
                 //画边界
-                canvas.drawCircle(mRadius, mRadius, mBorderRadius, mBorderPaint);
+                if (mBorderWidth > 0)
+                    canvas.drawCircle(mRadius, mRadius, mBorderRadius, mBorderPaint);
             }
         } else {
             super.onDraw(canvas);
