@@ -32,8 +32,8 @@ public class BaseDialog<D extends BaseDialog, L extends OnBaseDialogListener> ex
 
     protected final String TAG = this.getClass().getSimpleName();
 
-    //显示宽度占屏幕宽度比例，默认0.8
-    private float mWidthRatio = 0.8f;
+    //显示宽度占屏幕宽度比例，默认为MATCH_PARENT
+    private float mWidthRatio = 0f;
     //显示高度占屏幕高度比例，默认0，表示高度由布局决定。
     private float mHeightRatio = 0;
     //进出场动画
