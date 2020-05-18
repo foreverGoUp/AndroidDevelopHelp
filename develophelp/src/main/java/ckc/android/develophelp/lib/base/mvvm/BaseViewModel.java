@@ -9,4 +9,16 @@ public class BaseViewModel<NAVI extends IBaseViewNavigator> {
 
     //界面导航器
     protected NAVI mViewNavigator;
+
+    public void onAttachView(NAVI view) {
+        mViewNavigator = view;
+    }
+
+    public void onDetachView() {
+        mViewNavigator = null;
+    }
+
+    protected boolean isAttachedView() {
+        return mViewNavigator != null;
+    }
 }
